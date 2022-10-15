@@ -7,7 +7,25 @@ interface TodoData {
     completed: boolean;
 }
 
-export default class App extends Component<any, any>{
+type State = {
+    todoDatas: TodoData[];
+}
+
+export default class App extends Component<any, State>{
+  state: State = {
+      todoDatas: [
+          {
+              id: 1,
+              title: "공부하기",
+              completed: true,
+          },
+          {
+              id: 2,
+              title: "청소하기",
+              completed: false,
+          }
+      ]
+  }
   btnStyle = {
       color: "#fff",
       border: "none",
@@ -25,22 +43,11 @@ export default class App extends Component<any, any>{
       }
   }
 
-  todoData: TodoData[] = [
-      {
-          id: 1,
-          title: "공부하기",
-          completed: true,
-      },
-      {
-          id: 2,
-          title: "청소하기",
-          completed: false,
-      }
-  ];
-
   handleClick = (id: number) => {
-      const newTodoData = this.todoData.filter((data: TodoData) => data.id !== id)
-      console.log(`newTodoData: ${JSON.stringify(newTodoData)}`);
+      const newTodoData = this.state.todoDatas.filter((data: TodoData) => data.id !== id)
+      this.setState({
+          todoDatas: newTodoData
+      })
   }
 
   render() {
@@ -50,11 +57,11 @@ export default class App extends Component<any, any>{
               <div className="title">
                   <h1>할 일 목록</h1>
               </div>
-              {this.todoData.map((data:TodoData) => (
+              {this.state.todoDatas.map((data:TodoData) => (
                   <div key={data.id} style={this.getStyle()}>
                       <input type="checkbox" defaultChecked={data.completed}/>
                       {data.title}
-                      <button style={this.btnStyle} onClick={() => this.handleClick(data.id)}></button>
+                      <button style={this.btnStyle} onClick={() => this.handleClick(data.id)}>x</button>
                   </div>
               ))}
           </div>
