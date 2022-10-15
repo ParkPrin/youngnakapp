@@ -38,7 +38,7 @@ export default class App extends Component<any, State>{
       cursor: "pointer",
       float: "right" as "right"
   }
-  getStyle = (completed: boolean) => {
+  getStyle = (completed: boolean): any => {
       return {
           marginTop: "15px",
           padding: "10px",
