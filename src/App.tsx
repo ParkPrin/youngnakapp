@@ -38,22 +38,22 @@ export default class App extends Component<any, State>{
       cursor: "pointer",
       float: "right" as "right"
   }
-  getStyle = () => {
+  getStyle = (completed: boolean) => {
       return {
           marginTop: "15px",
           padding: "10px",
           borderBottom: "1px #ccc dotted",
-          textDecoration: "none",
+          textDecoration: completed ? "line-through" : "none",
       }
   }
 
-  deleteItem = (id: number) => {
+  deleteItem = (id: number): void => {
       const newTodoData = this.state.todoDatas.filter((data: TodoData) => data.id !== id)
       this.setState({
           todoDatas: newTodoData
       })
   }
-  addItem = (e: React.MouseEvent<HTMLInputElement>) => {
+  addItem = (e: React.MouseEvent<HTMLInputElement>): void => {
       e.preventDefault();
       const keyIndex: number = this.state.keyIndex + 1;
 
@@ -64,20 +64,25 @@ export default class App extends Component<any, State>{
       }
       this.setState({
           todoDatas: [...this.state.todoDatas, newTodoItem],
-          keyIndex: keyIndex
-      })
-      this.clearInput();
-  }
-
-  clearInput = () => {
-      this.setState({
+          keyIndex: keyIndex,
           value: ''
       })
   }
 
-  inputTitle = (e:ChangeEvent<HTMLInputElement>) => {
+  inputTitle = (e:ChangeEvent<HTMLInputElement>): void => {
       this.setState({
           value: e.target.value
+      })
+  }
+  changeCheckbox = (id: number): void => {
+      const changeTodoDatas = this.state.todoDatas.map((item) => {
+          if (item.id === id){
+              item.completed = !item.completed;
+          }
+          return item;
+      });
+      this.setState({
+          todoDatas: changeTodoDatas
       })
   }
 
@@ -89,8 +94,8 @@ export default class App extends Component<any, State>{
                   <h1>할 일 목록</h1>
               </div>
               {this.state.todoDatas.map((data:TodoData) => (
-                  <div key={data.id} style={this.getStyle()}>
-                      <input type="checkbox" defaultChecked={data.completed}/>
+                  <div key={data.id} style={this.getStyle(data.completed)}>
+                      <input type="checkbox" defaultChecked={data.completed} onChange={() => this.changeCheckbox(data.id)}/>
                       {data.title}
                       <button style={this.btnStyle} onClick={() => this.deleteItem(data.id)}>x</button>
                   </div>
