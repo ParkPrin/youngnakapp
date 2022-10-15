@@ -1,6 +1,12 @@
 import React, {Component} from "react";
 import "./App.css";
 
+interface TodoData {
+    id: number;
+    title: string;
+    completed: boolean;
+}
+
 export default class App extends Component<any, any>{
   btnStyle = {
       color: "#fff",
@@ -18,6 +24,20 @@ export default class App extends Component<any, any>{
           textDecoration: "none",
       }
   }
+
+  todoData: TodoData[] = [
+      {
+          id: 1,
+          title: "공부하기",
+          completed: true,
+      },
+      {
+          id: 2,
+          title: "청소하기",
+          completed: false,
+      }
+  ]
+
   render() {
     return (
         <div className="container">
@@ -25,16 +45,13 @@ export default class App extends Component<any, any>{
               <div className="title">
                   <h1>할 일 목록</h1>
               </div>
-              <div style={this.getStyle()}>
-                  <input type="checkbox" defaultChecked={false}/>
-                  공부하기
-                  <button style={this.btnStyle}>x</button>
-              </div>
-              <div style={this.getStyle()}>
-                  <input type="checkbox" defaultChecked={false}/>
-                  청소하기
-                  <button style={this.btnStyle}>x</button>
-              </div>
+              {this.todoData.map((data:TodoData) => (
+                  <div key={data.id} style={this.getStyle()}>
+                      <input type="checkbox" defaultChecked={data.completed}/>
+                      {data.title}
+                      <button style={this.btnStyle}></button>
+                  </div>
+              ))}
           </div>
         </div>
     )
