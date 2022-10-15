@@ -28,7 +28,7 @@ export default function Form(
         setValue(e.target.value);
     }
     return (
-        <form style={{ display: 'flex'}}>
+        <form style={{ display: 'flex', marginTop: '15px'}}>
             <input type="text" name="value" value={value} style={{ flex: '10', padding: '5px'}} onChange={(e) => inputTitle(e)}/>
             <input type="submit" value="입력" className="btn" style={{flex: '1'}} onClick={(e) => addItem(e)}/>
         </form>
