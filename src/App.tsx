@@ -9,9 +9,9 @@ export default function App():JSX.Element {
   const [value, setValue] = useState<string>("");
   const [keyIndex, setKeyIndex] = useState<number>(0);
     return (
-      <div className="container">
-        <div className="todoBlock">
-          <div className="title">
+      <div className="flex items-center justify-center w-screen h-screen bg-blue-200">
+        <div className="w-full p-6 m-4 bg-white shadow lg:w-3/4 lg:max-w-lg">
+          <div className="flex justify-between mb-3">
             <h1>할 일 목록</h1>
           </div>
           <Lists todoDatas={todoDatas} setTodoDatas={setTodoDatas}  />

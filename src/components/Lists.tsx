@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction} from 'react';
 import {TodoData} from "../type/TodoData";
 
 type Props = {
@@ -9,24 +9,6 @@ type Props = {
 export default function Lists(
     {todoDatas, setTodoDatas}: Props,
   ):JSX.Element {
-
-  const btnStyle = {
-    color: "#fff",
-    border: "none",
-    padding: "5px 9px",
-    borderRadius: "50%",
-    cursor: "pointer",
-    float: "right" as "right"
-  }
-
-  const getStyle = (completed: boolean): any => {
-    return {
-      marginTop: "15px",
-      padding: "10px",
-      borderBottom: "1px #ccc dotted",
-      textDecoration: completed ? "line-through" : "none",
-    }
-  }
 
   const changeCheckbox = (id: number): void => {
     const changeTodoDatas = todoDatas.map((item) => {
@@ -45,10 +27,19 @@ export default function Lists(
   return (
       <div>
         {todoDatas.map((data:TodoData) => (
-            <div key={data.id} style={getStyle(data.completed)}>
-              <input type="checkbox" defaultChecked={data.completed} onChange={() => changeCheckbox(data.id)}/>
-              {data.title}
-              <button style={btnStyle} onClick={() => deleteItem(data.id)}>x</button>
+            <div key={data.id}>
+              <div className="flex items-center justify-between w-full px-4 py-1 my-2 text-gray-600 bg-gray-100 border rounded">
+                <div className="items-center">
+                  <input
+                    type="checkbox"
+                    defaultChecked={data.completed}
+                    onChange={() => changeCheckbox(data.id)}/>
+                  <span className={data.completed ? "line-through" : undefined}>{data.title}</span>
+                </div>
+                <div className="items-center">
+                  <button onClick={() => deleteItem(data.id)}>x</button>
+                </div>
+              </div>
             </div>
         ))}
       </div>

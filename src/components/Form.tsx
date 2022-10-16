@@ -10,7 +10,7 @@ type Props = {
 export default function Form(
         {value, keyIndex, setTodoDatas, setValue, setKeyIndex}: Props
     ):JSX.Element {
-    const addItem = (e: React.MouseEvent<HTMLInputElement>): void => {
+    const addItem = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const key: number = keyIndex + 1;
 
@@ -28,9 +28,20 @@ export default function Form(
         setValue(e.target.value);
     }
     return (
-        <form style={{ display: 'flex', marginTop: '15px'}}>
-            <input type="text" name="value" value={value} style={{ flex: '10', padding: '5px'}} onChange={(e) => inputTitle(e)}/>
-            <input type="submit" value="입력" className="btn" style={{flex: '1'}} onClick={(e) => addItem(e)}/>
+        <form onSubmit={addItem} className="flex pt-2">
+            <input
+                type="text"
+                name="value"
+                className="w-full px-3 py-2 mr-4 text-gray-500 border rounded shadow"
+                placeholder="해야 할 일을 입력하세요"
+                value={value}
+                onChange={inputTitle}
+            />
+            <input
+                type="submit"
+                value="입력"
+                className="p-2 text-blue-400 border-2 border-blue-400 rounded hover:text-white hover:bg-blue-200"
+            />
         </form>
     )
 
