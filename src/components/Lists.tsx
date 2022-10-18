@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {TodoData} from "../type/TodoData";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 
@@ -13,6 +13,11 @@ export default function Lists(
   const handleEnd = (result:DropResult) => {
     console.log(result);
     if(!result.destination) return;
+    const newTodoDatas = todoDatas;
+
+    const [reorderItem] = newTodoDatas.splice((result.source.index, 1));
+    newTodoDatas.splice(result.destination.index, 0, reorderItem);
+    setTodoDatas(newTodoDatas)
   };
   const changeCheckbox = (id: number): void => {
     const changeTodoDatas = todoDatas.map((item) => {
@@ -31,13 +36,13 @@ export default function Lists(
   return (
       <div>
         <DragDropContext onDragEnd={handleEnd}>
-          <Droppable droppableId="to-dos">
+          <Droppable droppableId='handleEnd'>
             {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                   {todoDatas.map((data:TodoData, index: number) => (
                     <Draggable draggableId={data.id.toString()} key={data.id} index={index}>
                       {(provided, snapshot) => (
-                        <div key={data.id} {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps} className={`${snapshot.isDragging ? "bg-gray-400": "bg-gray-100"} flex items-center justify-between w-full px-4 py-1 my-2 text-gray-600 bg-gray-100 border rounded`}>
+                        <div key={data.id} {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps} className={`${snapshot.isDragging ? "bg-gray-400": "bg-gray-100"} flex items-center justify-between w-full px-4 py-1 my-2 text-gray-600 border rounded`}>
                           <div className="items-center">
                             <input
                               type="checkbox"
