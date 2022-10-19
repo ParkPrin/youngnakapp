@@ -1,5 +1,5 @@
 export type TodoData = {
-    id: number;
-    title: string;
-    completed: boolean;
+  id: number;
+  title: string;
+  completed: boolean;
 };
