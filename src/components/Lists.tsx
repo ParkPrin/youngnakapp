@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useCallback} from 'react';
 import {TodoData} from "../type/TodoData";
 import {
   DragDropContext,
@@ -15,18 +15,31 @@ type Props = {
   setTodoDatas: Dispatch<SetStateAction<TodoData[]>>;
 };
 
-export default function Lists(
+const Lists = React.memo((
     {todoDatas, setTodoDatas}: Props,
-  ):JSX.Element {
-  const handleEnd = (result:DropResult) => {
-    console.log(result);
+  ):JSX.Element => {
+  const handleEnd = useCallback((result:DropResult) => {
     if(!result.destination) return;
     const newTodoDatas = todoDatas;
 
     const [reorderItem] = newTodoDatas.splice((result.source.index, 1));
     newTodoDatas.splice(result.destination.index, 0, reorderItem);
     setTodoDatas(newTodoDatas)
-  };
+  }, [todoDatas, setTodoDatas]);
+  const changeCheckbox = useCallback((id: number): void => {
+    const changeTodoDatas = todoDatas.map((item) => {
+      if (item.id === id){
+        item.completed = !item.completed;
+      }
+      return item;
+    });
+    setTodoDatas(changeTodoDatas);
+  }, [todoDatas, setTodoDatas])
+
+  const deleteItem = (id: number): void => {
+    const newTodoData = todoDatas.filter((data: TodoData) => data.id !== id)
+    setTodoDatas(newTodoData)
+  }
   return (
       <div>
         <DragDropContext onDragEnd={handleEnd}>
@@ -36,7 +49,7 @@ export default function Lists(
                   {todoDatas.map((data:TodoData, index: number) => (
                     <Draggable draggableId={data.id.toString()} key={data.id} index={index}>
                       {(provided:DraggableProvided, snapshot:DraggableStateSnapshot) => (
-                        <Item data={data} provided={provided} snapshot={snapshot} todoDatas={todoDatas} setTodoDatas={setTodoDatas} />
+                        <Item data={data} provided={provided} snapshot={snapshot} changeCheckbox={changeCheckbox} deleteItem={deleteItem} />
                       )}
                     </Draggable>
                 ))}
@@ -47,4 +60,6 @@ export default function Lists(
         </DragDropContext>
       </div>
   )
-}
+});
+
+export default Lists;

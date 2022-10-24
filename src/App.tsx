@@ -6,7 +6,6 @@ import Form from "./components/Form";
 
 export default function App():JSX.Element {
   const [todoDatas, setTodoDatas] = useState<TodoData[]>([]);
-  const [value, setValue] = useState<string>("");
   const [keyIndex, setKeyIndex] = useState<number>(0);
     return (
       <div className="flex items-center justify-center w-screen h-screen bg-blue-200">
@@ -16,11 +15,9 @@ export default function App():JSX.Element {
           </div>
           <Lists todoDatas={todoDatas} setTodoDatas={setTodoDatas}  />
           <Form
-              value={value}
-              keyIndex={keyIndex}
-              setTodoDatas={setTodoDatas}
-              setValue={setValue}
-              setKeyIndex={setKeyIndex}
+            keyIndex={keyIndex}
+            setTodoDatas={setTodoDatas}
+            setKeyIndex={setKeyIndex}
           />
         </div>
       </div>
