@@ -9,6 +9,7 @@ import {
   DropResult
 } from "react-beautiful-dnd";
 import Item from "./Item";
+import {LocalstorageManager} from "../common/localstorage";
 
 type Props = {
   todoDatas: TodoData[];
@@ -18,34 +19,33 @@ type Props = {
 const Lists = React.memo((
     {todoDatas, setTodoDatas}: Props,
   ):JSX.Element => {
-  const handleEnd = (result:DropResult) => {
+  const handleEnd = useCallback( (result:DropResult): void => {
     if(!result.destination) return;
     const newTodoDatas = todoDatas;
     const [reorderItem] = todoDatas.splice(result.source.index, 1);
     newTodoDatas.splice(result.destination.index, 0, reorderItem);
-    setTodoDatas(newTodoDatas)
-  };
-  const changeCheckbox = useCallback((id: number): void => {
-    const changeTodoDatas = todoDatas.map((item) => {
+    LocalstorageManager.saveTodoList("todoData", newTodoDatas, setTodoDatas);
+  }, [todoDatas, setTodoDatas]);
+  const changeCheckbox = useCallback( (id: number): void => {
+    const inpuChangeTodoDatas = todoDatas.map((item) => {
       if (item.id === id){
         item.completed = !item.completed;
       }
       return item;
     });
-    setTodoDatas(changeTodoDatas);
+    LocalstorageManager.saveTodoList("todoData", inpuChangeTodoDatas, setTodoDatas);
   }, [todoDatas, setTodoDatas]);
-  const changeTodoDatas = useCallback((todoData: TodoData): void => {
+  const changeTodoDatas = useCallback( (todoData: TodoData): void => {
     const resultTodoDatas:TodoData[] = todoDatas.map((item:TodoData) => {
       return item.id === todoData.id ? todoData : item;
     });
-    setTodoDatas(resultTodoDatas);
+    LocalstorageManager.saveTodoList("todoData", resultTodoDatas, setTodoDatas);
   }, [todoDatas, setTodoDatas]);
 
-  const deleteItem = (id: number): void => {
-    console.log(`deleteItem: ${id}`);
-    const newTodoData = todoDatas.filter((data: TodoData) => data.id !== id)
-    setTodoDatas(newTodoData)
-  }
+  const deleteItem = useCallback( (id: number): void => {
+    const newTodoDatas:TodoData[] = todoDatas.filter((data: TodoData) => data.id !== id)
+    LocalstorageManager.saveTodoList("todoData", newTodoDatas, setTodoDatas);
+  }, [todoDatas, setTodoDatas]);
   return (
       <div>
         <DragDropContext onDragEnd={handleEnd}>
