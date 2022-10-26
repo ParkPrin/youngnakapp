@@ -1,10 +1,13 @@
 import React from "react";
 import "./App.css";
+import Nav from "./components/Nav";
 
-export default function App():JSX.Element {
+const App = ():JSX.Element => {
     return (
-      <div>
-
+      <div className="app">
+        <Nav />
       </div>
     );
 }
+
+export default App;

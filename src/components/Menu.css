@@ -1,0 +1,9 @@
+.menu {
+  position: fixed;
+  right: 5%;
+  width: 40%;
+}
+
+.menu__item {
+  margin-right: 20px;
+}
